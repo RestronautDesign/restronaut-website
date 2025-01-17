@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import GradientScene from "@/components/gradientscene";
-import IphoneScene from "@/components/iphoneScene";
+import GlobeScene from "@/components/globescene";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +38,8 @@ export default function Home() {
   src={'/textures/grid1.png'}
 />      
 
-<GradientScene/></div>
-<IphoneScene/>
+<GradientScene colorA={"#FF758C"} colorB={"#7A691E"} colorC={"#311EFF"} colorD={"#9B009B"}/></div>
+<GlobeScene/>
 {/* <div className="w-[1040px] h-[700px] left-0 lg:left-44 mx-auto absolute bg-red-500 blur-3xl translate-y-32 rounded-full opacity-50"></div> */}
 
 

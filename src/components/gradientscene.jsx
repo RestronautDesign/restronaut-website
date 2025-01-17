@@ -3,10 +3,10 @@ import { Canvas } from "react-three-fiber";
 import { PerspectiveCamera, OrbitControls, useTexture, Sparkles } from "@react-three/drei";
 import PlaneWithShader from "./planeShader";
 
-const GradientScene = () => {
+const GradientScene = ({colorA,colorB,colorC,colorD}) => {
   const cameraRef = useRef();
   const [aspect, setAspect] = useState(1);
-
+  const colors = [colorA, colorB, colorC, colorD]; // Example colors array
   // Update the aspect ratio when the window resizes
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -29,18 +29,16 @@ const GradientScene = () => {
         <Canvas
           gl={{ antialias: true }}
           shadows
-          // camera={{ position: [0, 0, 100], fov: 75 }}
         >
-          {/* <Perf position={'top-left'} /> */}
+       
           <PerspectiveCamera
             ref={cameraRef}
             makeDefault
             position={[0, 0, 0.1]}
           />
-          {/* <color args={["#030608"]} attach="background" /> */}
           <fog args={["rgba(2, 6, 8, 1)", 30, 10]} attach="fog" />
-          {/* <OrbitControls /> */}
-          <PlaneWithShader />
+
+          <PlaneWithShader colors={colors}/>
         </Canvas>
       </div>
       

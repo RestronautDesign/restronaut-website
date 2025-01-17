@@ -6,7 +6,7 @@ import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import PlaneWithShader from "./planeShader";
 import { Model } from "@/components/Iphone";
 
-const IphoneScene = () => {
+const GlobeScene = () => {
   const cameraRef = useRef();
 
   return (
@@ -44,7 +44,7 @@ const IphoneScene = () => {
     </>
   )}
 
-    export default IphoneScene;
+    export default GlobeScene;
 
 
 

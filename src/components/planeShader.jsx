@@ -10,6 +10,10 @@ const FilmGrainShaderMaterial = shaderMaterial(
     iResolution: new THREE.Vector3(1, 1, 1),
     iTime: 0,
     filmGrainIntensity: 0.1,
+    color1: new THREE.Color(1.0, 0.0, 0.0), // Default red
+    color2: new THREE.Color(0.0, 1.0, 0.0), // Default green
+    color3: new THREE.Color(0.0, 0.0, 1.0), // Default blue
+    color4: new THREE.Color(1.0, 1.0, 0.0), // Default yellow
   },
   // Vertex Shader
   `
@@ -26,6 +30,10 @@ const FilmGrainShaderMaterial = shaderMaterial(
     varying vec2 vUv;
     uniform vec3 iResolution;
     uniform float iTime;
+    uniform vec3 color1;
+uniform vec3 color2;
+uniform vec3 color3;
+uniform vec3 color4;
 
     mat2 Rot(float a) {
         float s = sin(a);
@@ -75,10 +83,10 @@ const FilmGrainShaderMaterial = shaderMaterial(
         tuv.y += 0.5; // Increase this value to make red larger
 
         // Define gradient colors
-        vec3 lightRed = vec3(233, 51, 52) / vec3(255);
-        vec3 darkRed = vec3(122, 105, 30) / vec3(255);
-        vec3 lightBlue = vec3(65, 105, 225) / vec3(255);
-        vec3 darkBlue = vec3(128, 0, 128) / vec3(255);
+        vec3 lightRed = color1 ;
+        vec3 darkRed = color2 ;
+        vec3 lightBlue = color3 ;
+        vec3 darkBlue = color4 ;
 
         // Interpolate between gradients with adjusted values
         float t = smoothstep(-0.2, 0.3, tuv.y); // Adjust these values to increase the size of red
@@ -98,7 +106,7 @@ const FilmGrainShaderMaterial = shaderMaterial(
 // Extend the shader material so it can be used as JSX
 extend({ FilmGrainShaderMaterial });
 
-const PlaneWithShader = () => {
+const PlaneWithShader = ({colors}) => {
   const shaderRef = useRef();
   const [resolution, setResolution] = useState([window.innerWidth, window.innerHeight]);
 
@@ -118,20 +126,40 @@ const PlaneWithShader = () => {
     }
   });
 
+  // Convert colors from THREE.Color to vec3 format (scaled to 0-255)
+  const convertColorToVec3 = (color) => {
+    return new THREE.Vector3(
+      color.r * 255,
+      color.g * 255,
+      color.b * 255
+    );
+  };
+
+  const color1 = new THREE.Color(colors[0]);
+  const color2 = new THREE.Color(colors[1]);
+  const color3 = new THREE.Color(colors[2]);
+  const color4 = new THREE.Color(colors[3]);
+
   return (
     <mesh>
       <planeGeometry args={[900, 100]} />
       <filmGrainShaderMaterial
         ref={shaderRef}
         iResolution={[resolution[0], resolution[1], 1]}
+        color1={new THREE.Color(colors[0])}  // Converted to vec3
+        color2={new THREE.Color(colors[1])}  // Converted to vec3
+        color3={new THREE.Color(colors[2])}  // Converted to vec3
+        color4={new THREE.Color(colors[3])}  // Converted to vec3
       />
     </mesh>
   );
 };
+{/* <GradientScene colorA={"#2BE12B"} colorB={"#2E3DFF"} colorC={"#0816C6"} colorD={"#F12865"}/></div> */}
 
-const App = () => {
+const App = ({colors}) => {
+  
   return (
-      <PlaneWithShader />
+      <PlaneWithShader colors={colors}/>
   );
 };
 
